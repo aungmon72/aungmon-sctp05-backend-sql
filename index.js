@@ -90,6 +90,34 @@ async function main() {
         res.redirect('/currencies');
     })
 
+    app.get('/currencies/create', async(req,res)=>{
+        let [currencies] = await connection.execute(sqlCommands[0][2]);
+        let [regions]    = await connection.execute(sqlCommands[1][2]);
+        //  let currency     = currencies[parseInt(req.params.currency_id)-1];
+        console.log(currencies);
+        console.log(regions);
+
+        res.render('currencies/add', {
+            'currencies': currencies,
+            'regions' : regions
+        })
+    })    
+
+    // app.post('/customers/create', async(req,res)=>{
+    //     let {first_name, last_name, rating, company_id} = req.body;
+    //     let query = 'INSERT INTO Customers (first_name, last_name, rating, company_id) VALUES (?, ?, ?, ?)';
+    //     let bindings = [first_name, last_name, rating, company_id];
+    //     await connection.execute(query, bindings);
+    //     res.redirect('/customers');
+    // })
+
+    app.post('/currencies:customer_id/create', async (req, res) => {
+        let {currency_name, alpha2, CallingCodes, alpha3, ioc, symbol} = req.body;
+        let query = 'UPDATE Currencies SET currency_name=?, alpha2=?, CallingCodes=?, alpha3=?, ioc=?, symbol=? WHERE currency_id=?';
+        let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol, req.params.currency_id];
+        await connection.execute(query, bindings);
+        res.redirect('/currencies');
+    })
 
     app.get('/currenciesRegions', async (req, res) => {
         let [currenciesRegions] = await connection.execute(sqlCommands[3][2]);

@@ -8,4 +8,4 @@ CREATE TABLE Regions_Countries (
     region_name VARCHAR(40) NOT NULL,
     country_iso2 VARCHAR(20) NOT NULL
     
-);`
+);

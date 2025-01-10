@@ -12,7 +12,7 @@ CREATE TABLE Currencies (
     symbol VARCHAR(40)
 );
 -->
-<h1>Edit Currency</h1>
+<h1>Add Currency</h1>
 
 <form method="POST">
     <div class="mb-3">
@@ -32,7 +32,7 @@ CREATE TABLE Currencies (
         <input type="text" class="form-control" name="CallingCodes" value="{{currency.CallingCodes}}">
     </div>    <div class="mb-3">
         <label>IOC</label>
-        <input type="text" class="form-control" name="rating" ioc="{{currency.ioc}}">
+        <input type="text" class="form-control" name="ioc" value="{{currency.ioc}}">
     </div>
     <div class="mb-3">
         <label>Symbol</label>
@@ -53,9 +53,8 @@ CREATE TABLE Currencies (
         </div>    
     -->
 
-    <button type="submit" class="btn btn-primary">Update currency</button>
-    <button type="submit" class="btn btn-danger">Update currency</button>
-    
+    <button type="submit" class="btn btn-primary">Add currency</button>
+
 </form>
 {{/block}}
 {{/extends}}

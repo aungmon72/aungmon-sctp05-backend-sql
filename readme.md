@@ -1,16 +1,14 @@
-To start mysql, in the terminal, type in `mysql -u root`
-
-# Create a new database user
-In the MySQL CLI:
-```
-CREATE USER 'ahkow'@'localhost' IDENTIFIED BY 'rotiprata123';
-```
-
-```
-GRANT ALL PRIVILEGES on sakila.* TO 'ahkow'@'localhost' WITH GRANT OPTION;
-```
-**Note:** Replace *sakila* with the name of the database you want the user to have access to
- 
- ```
-FLUSH PRIVILEGES;
-```
+DATABASE IMPORT
+ mysql -u root < ./_data/schema_currencies.sql
+ mysql -u root < ./_data/schema_regions.sql
+ mysql -u root < ./_data/schema_regions_countries.sql
+ mysql -u root < ./_data/data_currencies.sql
+ mysql -u root < ./_data/data_regions.sql
+ mysql -u root < ./_data/data_regions_countries2.sql
+ mysql -u root < ./_data/data_regions_countries3.sql
+ mysql -u root < ./_data/data_regions_countries4.sql
+ mysql -u root < ./_data/data_regions_countries5.sql
+ mysql -u root < ./_data/data_regions_countries6.sql
+ mysql -u root < ./_data/data_regions_countries7.sql
+ mysql -u root < ./_data/data_regions_countries8.sql
+ mysql -u root < ./_data/data_regions_countries9.sql
