@@ -1,0 +1,61 @@
+{{#extends "base"}}
+{{#block "content"}}
+<!--
+-- Creating Currencies Table
+CREATE TABLE Currencies (
+    currency_id INT AUTO_INCREMENT PRIMARY KEY,
+    currency_name VARCHAR(200) NOT NULL,
+    alpha2 VARCHAR(20),
+    CallingCodes VARCHAR(10),
+    alpha3 VARCHAR(20), 
+    ioc VARCHAR(20), 
+    symbol VARCHAR(40)
+);
+-->
+<h1>Edit Currency</h1>
+
+<form method="POST">
+    <div class="mb-3">
+        <label>Currency Name</label>
+        <input type="text" class="form-control" name="first_name" value="{{currency.currency_name}}">
+    </div>
+    <div class="mb-3">
+        <label>Currency ISO2 Name</label>
+        <input type="text" class="form-control" name="last_name" value="{{currency.alpha2}}">
+    </div>
+    <div class="mb-3">
+        <label>Currency ISO3 Name</label>
+        <input type="text" class="form-control" name="rating" value="{{currency.alpha3}}">
+    </div>
+    <div class="mb-3">
+        <label>Calling Code</label>
+        <input type="text" class="form-control" name="rating" value="{{currency.CallingCodes}}">
+    </div>    <div class="mb-3">
+        <label>IOC</label>
+        <input type="text" class="form-control" name="rating" value="{{currency.ioc}}">
+    </div>
+    <div class="mb-3">
+        <label>Symbol</label>
+        <input type="text" class="form-control" name="rating" value="{{currency.symbol}}">
+    </div>
+    
+    <!--
+        <div class="mb-3">
+            <label>Companies</label>
+            <select name="company_id" class="form-control">
+                {{#each companies}}
+                    <option value="{{this.company_id}}" 
+                    {{#eq this.company_id ../currency.company_id}}selected{{/eq}}>
+                        {{this.name}}
+                    </option>
+                {{/each}}
+            </select>
+        </div>    
+    -->
+
+    <button type="submit" class="btn btn-primary">Update currency</button>
+    <button type="submit" class="btn btn-danger">Update currency</button>
+    
+</form>
+{{/block}}
+{{/extends}}

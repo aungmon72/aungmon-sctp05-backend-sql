@@ -1,18 +1,25 @@
 {{#extends "base"}}
 {{#block "content"}}
-<h1>Currencies</h1>
+<h1>Regions & Currenncies</h1>
 <table class="table">
     currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
+    region_name, country_iso2 
     <tr>
+        <th>Region Name</th>
         <th>Currency Name</th>
         <th>ISO2 Name</th>
         <th>ISO3 Name</th>
-        <th>Country Symbol</th>
+
+        <th>Currency Symbol</th>
         <th>Action</th>
     </tr>
 
-    {{#each currencies}}
+
+    {{#each currenciesRegions}}
     <tr>
+        
+        <td>{{this.region_name}}
+        </td>
         <td>{{this.currency_name}}
         </td>
         <td>{{this.alpha2}}
@@ -22,8 +29,8 @@
         <td>{{this.symbol}}
         </td>
 
-        <td><a href="/currencies/{{currency_id}}/edit">Edit</a>
-            <a href="/currencies/{{currency_id}}/delete">Delete</a>
+        <td><a href="/currenciesRegions/{{currency_id}}/edit">Edit</a>
+            <a href="/currenciesRegions/{{currency_id}}/delete">Delete</a>
         </td>
     </tr>
     {{/each}}

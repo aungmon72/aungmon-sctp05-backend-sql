@@ -1,6 +1,6 @@
 {{#extends "base"}}
 {{#block "content"}}
-<h1>Currenncies</h1>
+<h1>Regions</h1>
 <table class="table">
     currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
     emoji_iso2, emoji_iso3, emoji_code
@@ -17,7 +17,10 @@
         <td>{{this.region_alpha2}}
         </td>
 
-        <td><a href="/regions/{{this.region_id}}/edit">Edit</a>
+        <td><a href="/regions/{{this.region_id}}/edit">Edit
+            </a>
+            <a href="/regions/{{this.region_id}}/delete">Delete
+            </a>
     </tr>
     {{/each}}
 </table>

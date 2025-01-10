@@ -1,4 +1,4 @@
-CREATE DATABASE Currencies;
+--  CREATE DATABASE Currencies;
 
 USE Currencies
 
