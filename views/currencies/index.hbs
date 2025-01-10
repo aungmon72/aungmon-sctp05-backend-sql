@@ -1,0 +1,31 @@
+{{#extends "base"}}
+{{#block "content"}}
+<h1>Currenncies</h1>
+<table class="table">
+    currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
+    <tr>
+        <th>Currency Name</th>
+        <th>ISO2 Name</th>
+        <th>ISO3 Name</th>
+        <th>Country Symbol</th>
+        <th>Action</th>
+    </tr>
+
+
+    {{#each currencies}}
+    <tr>
+        
+        <td>{{this.currency_name}}
+        </td>
+        <td>{{this.alpha2}}
+        </td>
+        <td>{{this.alpha3}}
+        </td>
+        <td>{{this.symbol}}</td>
+
+        <td><a href="/currencies/{{customer_id}}/edit">Edit</a>
+    </tr>
+    {{/each}}
+</table>
+{{/block}}
+{{/extends}}

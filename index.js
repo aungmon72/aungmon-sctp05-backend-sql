@@ -35,14 +35,39 @@ async function main() {
         'password': process.env.DB_PASSWORD
     })
 
-
-
     app.get('/', (req,res) => {
         res.send('Hello, World!');
     });
 
+    app.get('/currencies', async (req, res) => {
+        let [currencies] = await connection.execute('SELECT * FROM Currencies');
+        console.log(currencies);
+        res.render('currencies/index', {
+            'currencies': currencies
+        })
+    })
 
-    
+    app.get('/regions', async (req, res) => {
+        let [regions] = await connection.execute('SELECT * FROM Regions');
+        console.log(regions);
+        res.render('currencies/regions', {
+            'regions': regions
+        })
+    })
+
+    app.get('/regionsCountries', async (req, res) => {
+        let [regionsCountries] = await connection.execute('SELECT * FROM Regions_Countries');
+        console.log(regionsCountries);
+        res.render('currencies/regionsCountries', {
+            'regionsCountries': regionsCountries
+        })
+    })
+
+    app.listen(3000, ()=>{
+        
+        console.log('Server is running')
+    });
+
 }
 
 main();
