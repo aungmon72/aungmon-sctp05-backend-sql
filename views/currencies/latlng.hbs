@@ -1,0 +1,40 @@
+{{#extends "base"}}
+{{#block "content"}}
+<h1>Countries Latitude and Longitude</h1>
+<table class="table">
+    <!--
+        INSERT INTO Latlng (country_name, alpha2, alpha3, CallingCodes, lat, lng) VALUES
+    -->
+    
+    <tr>
+        <th>Country Name</th>
+        <th>ISO2 Name</th>
+        <th>ISO3 Name</th>
+        <th>Calling Code</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Load Map</th>
+    </tr>
+
+    {{#each latlngs}}
+    <tr>
+        <td>{{this.country_name}}
+        </td>
+        <td>{{this.alpha2}}
+        </td>
+        <td>{{this.alpha3}}
+        </td>
+        <td>{{this.CallingCodes}}
+        </td>
+        <td>{{this.lat}}
+        </td>
+        <td>{{this.lng}}
+        </td>
+        <td>
+        </td>
+        
+    </tr>
+    {{/each}}
+</table>
+{{/block}}
+{{/extends}}

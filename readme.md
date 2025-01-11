@@ -1,6 +1,7 @@
 DATABASE IMPORT
  mysql -u root < ./_data/schema_currencies.sql
  mysql -u root < ./_data/schema_regions.sql
+ mysql -u root < ./_data/schema_regions_countries.sql
  mysql -u root < ./_data/schema_latlng.sql
  
  mysql -u root < ./_data/data_currencies.sql

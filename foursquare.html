@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Include Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    
+    <!-- Include Leaflet MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+    <link rel="stylesheet" href="../_css/foursquare.css" />
+    <title>Four Square</title>
+  </head>
+  <body>
+    <div id="singapore-map">
+    </div>
+    <p></p><p></p>
+    <div id="search-container">
+        
+        <input type="text" id="search-input"/>
+        <button id="search-btn">Search</button>
+
+        <div id="search-results"></div>
+
+    </div>
+    <p></p><p></p>
+    <div>
+        <button id="toggle-search-btn">Toggle Search</button>
+    </div>
+    <div>
+      <button id="toggle-layer-btn">Toggle Layer</button>
+      <button id="clear-search-btn">Clear Search</button>
+      
+      <p></p><p></p>
+      <button id="load-border-btn">Load Border</button>      
+      <button id="show-polygon-btn">Show Border</button>
+      <button id="add-border-btn">Add Border</button>
+      <label for="added-border-dropdown">Added Borders (of country)</label>
+      <select name="added-border-dropdown" id="added-border-dropdown"></select>
+      <button id="delete-added-border-btn">Delete Added Border</button>
+      
+      <p></p><p></p>
+      <button id="show-hide-tile-layer-btn">Show / Hide Tile Layer</button>
+      <button id="freeze-float-view-btn">Freeze / Float View Layer</button>
+      
+      <p></p><p></p>
+      <button id="airport-load-btn">Load Airports</button>
+      <button id="airport-show-btn">Show Airports</button>
+      
+
+    </div>
+    
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+    ></script>
+   
+    <h4>>
+      <a href="http://127.0.0.1:5503" target="_blank">Open http://127.0.0.1:5503</a>
+    </h4>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin="">
+    </script>
+    <!-- Include Leaflet MarkerCluster JS -->
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="/data.js"></script>
+    <script src="/_js/utilities.js"></script>
+    <script src="/_js/utilities_files.js"></script>
+    <script src="../_js/geoJson.js"></script>
+    <script src="/_data/_countries.js"></script>
+    <script src="/_data/airports.js"></script>
+    <script src="/_data/_currency/currencyArray.js"></script>
+
+    <script src="../_js/foursquare_view.js"> </script>
+    <script src="../_js/foursquare_data.js"></script>
+    <script src="../_js/foursquare.js"></script>
+
+    <!--await search(40.74, -73.99, "tacos");
+        await search(1.404348, 103.793022, "singapore");
+        type in at the console/inspect
+    -->
+</body>
+</html>
+
+
+<!-- Include Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<!-- Include Leaflet MarkerCluster CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+<!-- Include Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Include Leaflet MarkerCluster JS -->
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>

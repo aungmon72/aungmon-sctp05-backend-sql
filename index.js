@@ -9,7 +9,12 @@ const sqlCommands = [
     ['Currencies',        'currencies',       'SELECT * FROM Currencies'],
     ['Regions',           'regions',          'SELECT * FROM Regions'],
     ['Regions_Countries', 'regionsCountries', 'SELECT * FROM Regions_Countries'],
-    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2']
+    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
+    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
+    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
+    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
+    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
+    ['Latlng','latlng','SELECT * FROM Latlng']
 
 ]
 
@@ -155,6 +160,16 @@ async function main() {
         console.log(regionsCountries);
         res.render('currencies/regionsCountries', {
             'regionsCountries': regionsCountries
+        })
+    })
+
+    app.get('/map', async (req, res) => {
+        //let [latlngs] = await connection.execute(sqlCommands[0][8]);
+        let [latlngs] = await connection.execute('select * from Latlng');
+    
+        console.log(latlngs);
+        res.render('currencies/foursquare', {
+            'latlngs': latlngs
         })
     })
 
