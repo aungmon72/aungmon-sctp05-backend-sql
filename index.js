@@ -130,13 +130,17 @@ async function main() {
     // country_iso2: 'CC'
 }
 
-    app.post('/currencies/:customer_id/edit', async (req, res) => {
+    app.post('/currencies/:currency_id/edit', async (req, res) => {
         let {currency_name, alpha2, CallingCodes, alpha3, ioc, symbol} = req.body;
+        console.log("req.body  ", req.body)
+        console.log("currency_name, alpha2, CallingCodes, alpha3, ioc, symbol  ", currency_name, alpha2, CallingCodes, alpha3, ioc, symbol);
         let query = 'UPDATE Currencies SET currency_name=?, alpha2=?, CallingCodes=?, alpha3=?, ioc=?, symbol=? WHERE currency_id=?';
         let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol, req.params.currency_id];
+        console.log("bindings  ",bindings);
         await connection.execute(query, bindings);
         res.redirect('/currencies');
     })
+
 
     app.get('/currencies/create', async(req,res)=>{
         let [currencies] = await connection.execute(sqlCommands[0][2]);
