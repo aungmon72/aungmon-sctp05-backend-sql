@@ -3,27 +3,38 @@
 <h1>Currencies</h1>
 <table class="table">
     currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
+    country_name, alpha2, alpha3, CallingCodes, lat, lng
     <tr>
-        <th>Currency Name</th>
+        <th>Country Name</th>
         <th>ISO2 Name</th>
         <th>ISO3 Name</th>
-        <th>Country Symbol</th>
+        <th>Currency Symbol</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        
         <th>Action</th>
     </tr>
 
-    {{#each currencies}}
+    {{#each currenciesLatlngs}}
     <tr>
-        <td>{{this.currency_name}}
+        <td>{{NAME}}
         </td>
-        <td>{{this.alpha2}}
+        <td>{{ISO2}}
         </td>
-        <td>{{this.alpha3}}
+        <td>{{ISO3}}
         </td>
-        <td>{{this.symbol}}
+        <td>{{SYMBOL}}
         </td>
-
-        <td><a href="/currencies/{{currency_id}}/edit">Edit</a>
-            <a href="/currencies/{{currency_id}}/delete">Delete</a>
+        <td>
+            {{Lat2 }}
+        </td>
+        <td>
+            {{Lng2}}
+        </td>
+        <td><a href="/currencies/{{ID}}/edit">Edt</a>
+            <a href="/currencies/{{ID}}/delete">Del</a>
+            <a href="/currencies/{{ID}}/map">Map</a>
+            
         </td>
     </tr>
     {{/each}}

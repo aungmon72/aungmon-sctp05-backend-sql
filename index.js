@@ -6,15 +6,39 @@ const wax = require('wax-on');
 require('dotenv').config();
 
 const sqlCommands = [
-    ['Currencies',        'currencies',       'SELECT * FROM Currencies'],
-    ['Regions',           'regions',          'SELECT * FROM Regions'],
-    ['Regions_Countries', 'regionsCountries', 'SELECT * FROM Regions_Countries'],
-    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
-    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
-    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
-    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
-    ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
-    ['Latlng','latlng','SELECT * FROM Latlng']
+/*0*/ ['Currencies',        'currencies',       'SELECT * FROM Currencies'],
+/*1*/ ['Regions',           'regions',          'SELECT * FROM Regions'],
+/*2*/ ['Regions_Countries', 'regionsCountries', 'SELECT * FROM Regions_Countries'],
+/*3*/ ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
+
+/*4*/ ['Currencies_Regions','currenciesRegions','SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
+/*5*/ ['Currencies_Latlng', 'currenciesLatlng', 
+       'SELECT currency_id as ID, country_name NAME, symbol AS SYMBOL, ' +
+            ' Latlng.alpha2 AS ISO2, Latlng.alpha3 AS ISO3, ' +
+            ' ROUND(Latlng.lat,2) AS Lat2, ROUND(Latlng.lng,2) Lng2 ' +
+            ' FROM Currencies ' + 
+            ' INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2'],
+
+// /*5*/ ['Currencies_Latlng', 'currenciesLatlng', 
+//        'SELECT currency_id, Currencies.country_name, Currencies.alpha2,  Currencies.alpha3, Currencies.symbol, ' +  
+//        '       ROUND(Latlng.lat,2), ROUND(Latlng.lng,2) ' +
+//        'FROM Currencies ' +
+//        'INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2'],
+/*    
+}
+
+SELECT currency_id, Currencies.country_name, Currencies.alpha2,  Currencies.alpha3, Currencies.symbol, ROUND(Latlng.lat,2), ROUND(Latlng.lng,2) FROM Currencies INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2
+SELECT currency_id, country_name, symbol, ROUND(Latlng.lat,2), ROUND(Latlng.lng,2) FROM Currencies INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2
+SELECT currency_id as ID, country_name NAME, symbol AS SYMBOL, Latlng.alpha2 AS ISO2, Latlng.alpha3 AS ISO3, ROUND(Latlng.lat,2) AS Lat2, ROUND(Latlng.lng,2) Lng2 FROM Currencies INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2
+
+*/
+
+/*6*/ ['Currencies_Latlng', 'currenciesLatlng', 
+       'SELECT * FROM Currencies INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2'],
+
+/*7*/ ['Currencies_Regions','currenciesRegions',
+       'SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
+/*8*/ ['Latlng','latlng','SELECT * FROM Latlng']
 
 ]
 
@@ -39,7 +63,18 @@ helpers({
 
 let connection;
 
+hbs.registerHelper('round', function(value) {
+    if (isNaN(value)) {
+        return '0.00';  
+    }
+    const value2 = parseFloat(parseFloat(value).toFixed(2));
 
+    console.log("value" , value, " value2 ", value2);
+    console.log("type of value   ",  Object.prototype.toString.call(value)); 
+    console.log("type of value2  ",  Object.prototype.toString.call(value2)); 
+    return value2;
+});
+  
 async function main() {
     connection = await createConnection({
         'host': process.env.DB_HOST,
@@ -52,13 +87,21 @@ async function main() {
         res.send('Hello, World!');
     });
 
+    {
+        // currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
+        // country_name, alpha2, alpha3, CallingCodes, lat, lng
+    }
     app.get('/currencies', async (req, res) => {
         let [currencies] = await connection.execute(sqlCommands[0][2]);
-        console.log(currencies);
+        let [currenciesLatlngs] = await connection.execute(sqlCommands[5][2]);
+        //  console.log(currencies);
+        console.log(currenciesLatlngs);
         res.render('currencies/index', {
-            'currencies': currencies
+            'currencies': currencies,
+            'currenciesLatlngs'   : currenciesLatlngs
         })
     })
+
 
     app.get('/currencies/:currency_id/edit', async (req, res) => {
         let [currencies] = await connection.execute(sqlCommands[0][2]);
@@ -87,7 +130,7 @@ async function main() {
     // country_iso2: 'CC'
 }
 
-    app.post('/currencies:customer_id/edit', async (req, res) => {
+    app.post('/currencies/:customer_id/edit', async (req, res) => {
         let {currency_name, alpha2, CallingCodes, alpha3, ioc, symbol} = req.body;
         let query = 'UPDATE Currencies SET currency_name=?, alpha2=?, CallingCodes=?, alpha3=?, ioc=?, symbol=? WHERE currency_id=?';
         let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol, req.params.currency_id];
@@ -170,6 +213,19 @@ async function main() {
         console.log(latlngs);
         res.render('currencies/foursquare', {
             'latlngs': latlngs
+        })
+    })
+
+    app.get('/currencies/:latlng_id_map/map', async (req, res) => {
+        //let [latlngs] = await connection.execute(sqlCommands[0][8]);
+        const latlng_id_map = req.params.latlng_id_map;
+        console.log("req.params.latlng_id_map  ", latlng_id_map);
+
+        let [latlngs] = await connection.execute('select * from Latlng where Latlng_id = latlng_id_map');
+        console.log(latlngs);
+        let latlng = latlngs[0];
+        res.render('currencies/foursquare', {
+            'latlng': latlng
         })
     })
 
