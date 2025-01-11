@@ -111,10 +111,22 @@ async function main() {
     //     res.redirect('/customers');
     // })
 
-    app.post('/currencies:customer_id/create', async (req, res) => {
+    // app.post('/currencies/:customer_id/create', async (req, res) => {
+    //     let {currency_name, alpha2, CallingCodes, alpha3, ioc, symbol} = req.body;
+    //     let query = 'UPDATE Currencies SET currency_name=?, alpha2=?, CallingCodes=?, alpha3=?, ioc=?, symbol=? WHERE currency_id=?';
+    //     let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol, req.params.currency_id];
+    //     await connection.execute(query, bindings);
+    //     res.redirect('/currencies');
+    // })
+
+    app.post('/currencies/create', async (req, res) => {
         let {currency_name, alpha2, CallingCodes, alpha3, ioc, symbol} = req.body;
-        let query = 'UPDATE Currencies SET currency_name=?, alpha2=?, CallingCodes=?, alpha3=?, ioc=?, symbol=? WHERE currency_id=?';
-        let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol, req.params.currency_id];
+        console.log("req.body        ", req.body);
+        console.log("currency_name, alpha2, CallingCodes, alpha3, ioc, symbol  ", currency_name, alpha2, CallingCodes, alpha3, ioc, symbol);
+        let query = 'INSERT INTO Currencies SET currency_name=?, alpha2=?, CallingCodes=?, alpha3=?, ioc=?, symbol=? ';
+        console.log("query    ", query);
+        let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol];
+        console.log("bindings   ", bindings);
         await connection.execute(query, bindings);
         res.redirect('/currencies');
     })
