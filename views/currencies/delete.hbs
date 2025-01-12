@@ -1,0 +1,41 @@
+{{#extends "base"}}
+
+{{#block "title"}}Delete Currency{{/block}}
+
+{{#block "content"}}
+
+        <table class="table">
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td>Currency ID</td>
+                <td>{{currency.currency_id}}</td>
+                <p></p>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td>Currency Name</td>
+                <td>{{currency.currency_name}}</td>
+                <p></p>
+            </tr>
+            <tr>
+                <td>Currency Symbol</td>
+                <td>{{currency.symbol}}</td>
+                <p></p>
+            </tr>
+            <tr></tr>
+        </table>
+<form method="POST">
+    <div class="alert alert-danger">
+        Are you sure you want to delete <p></p>
+        <input type="submit" value="Confirm" class="btn btn-danger"/>
+        <a href="/currencies" class="btn btn-primary">Cancel</a>
+    </div>
+</form>
+
+{{/block}}
+
+{{/extends}}

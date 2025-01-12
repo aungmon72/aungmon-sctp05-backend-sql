@@ -183,6 +183,26 @@ async function main() {
         res.redirect('/currencies');
     })
 
+    //  8.1 Implement a Route to Show a Confirmation Form
+    app.get('/currencies/:currency_id/delete', async function(req,res){
+        // display a confirmation form 
+        const [currencies] = await connection.execute(
+            "SELECT * FROM Currencies WHERE currency_id =?", [req.params.currency_id]
+        );
+        const currency = currencies[0];
+        console.log(currencies);
+        console.log(currency);
+        res.render('currencies/delete', {
+            currency
+        })
+    })
+
+    //  8.2 Process the Delete
+    app.post('/currencies/:currency_id/delete', async function(req, res){
+        await connection.execute(`DELETE FROM Currencies WHERE currency_id =?`, [req.params.currency_id]);
+        res.redirect('/currencies');
+    })
+
     app.get('/currenciesRegions', async (req, res) => {
         let [currenciesRegions] = await connection.execute(sqlCommands[3][2]);
         console.log(currenciesRegions);
