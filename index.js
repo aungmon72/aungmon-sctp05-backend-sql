@@ -110,7 +110,7 @@ async function main() {
         console.log(currencies);
         console.log(currency);
 
-        res.render('currencies/edit', {
+        res.render('./currencies/edit', {
             'currency': currency,
             'regions' : regions
         })
@@ -138,7 +138,7 @@ async function main() {
         let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol, req.params.currency_id];
         console.log("bindings  ",bindings);
         await connection.execute(query, bindings);
-        res.redirect('/currencies');
+        res.redirect('./currencies');
     })
 
 
@@ -149,7 +149,7 @@ async function main() {
         console.log(currencies);
         console.log(regions);
 
-        res.render('currencies/add', {
+        res.render('./currencies/add', {
             'currencies': currencies,
             'regions' : regions
         })
@@ -180,7 +180,7 @@ async function main() {
         let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol];
         console.log("bindings   ", bindings);
         await connection.execute(query, bindings);
-        res.redirect('/currencies');
+        res.redirect('./currencies');
     })
 
     //  8.1 Implement a Route to Show a Confirmation Form
@@ -192,7 +192,7 @@ async function main() {
         const currency = currencies[0];
         console.log(currencies);
         console.log(currency);
-        res.render('currencies/delete', {
+        res.render('./currencies/delete', {
             currency
         })
     })
@@ -200,19 +200,19 @@ async function main() {
     //  8.2 Process the Delete
     app.post('/currencies/:currency_id/delete', async function(req, res){
         await connection.execute(`DELETE FROM Currencies WHERE currency_id =?`, [req.params.currency_id]);
-        res.redirect('/currencies');
+        res.redirect('./currencies');
     })
 
-    app.get('/currenciesRegions', async (req, res) => {
+    app.get('/currencies/currenciesRegions', async (req, res) => {
         let [currenciesRegions] = await connection.execute(sqlCommands[3][2]);
         console.log(currenciesRegions);
 
-        res.render('currencies/currenciesRegions', {
+        res.render('./currencies/currenciesRegions', {
             'currenciesRegions': currenciesRegions
         })
     })
 
-    app.get('/regions', async (req, res) => {
+    app.get('/currencies/regions', async (req, res) => {
         //  let [regions] = await connection.execute('SELECT * FROM Regions');
         let [regions] = await connection.execute(sqlCommands[1][2]);
         console.log(regions);
@@ -221,7 +221,7 @@ async function main() {
         })
     })
 
-    app.get('/regionsCountries', async (req, res) => {
+    app.get('/currencies/regionsCountries', async (req, res) => {
         //let [regionsCountries] = await connection.execute('SELECT * FROM Regions_Countries');
         let [regionsCountries] = await connection.execute(sqlCommands[2][2]);
         console.log(regionsCountries);
@@ -235,7 +235,17 @@ async function main() {
         let [latlngs] = await connection.execute('select * from Latlng');
     
         console.log(latlngs);
-        res.render('currencies/foursquare', {
+        res.render('./currencies/latlngs', {
+            'latlngs': latlngs
+        })
+    })
+
+    app.get('/currencies/latlngs', async (req, res) => {
+        //let [latlngs] = await connection.execute(sqlCommands[0][8]);
+
+        let [latlngs] = await connection.execute('select * from Latlng ');
+        console.log(latlngs);
+        res.render('./currencies/foursquare', {
             'latlngs': latlngs
         })
     })
@@ -248,7 +258,7 @@ async function main() {
         let [latlngs] = await connection.execute('select * from Latlng where Latlng_id = latlng_id_map');
         console.log(latlngs);
         let latlng = latlngs[0];
-        res.render('currencies/foursquare', {
+        res.render('./currencies/foursquare', {
             'latlng': latlng
         })
     })
