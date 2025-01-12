@@ -2,6 +2,7 @@
 {{#block "content"}}
 <h1>Regions & Countries</h1>
 <table class="table">
+    <!--
     currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
     <p></p>
     emoji_iso2, emoji_iso3, emoji_code
@@ -10,10 +11,14 @@
     <p></p>
     region_country_id, region_name, country_iso2
     <p></p>
+    -->
     <tr>
         <th>Region Name</th>
         <th>Country Name</th>
+        <th></th>
+        <!--
         <th>Action</th>
+        -->
     </tr>
 
     {{#each regionsCountries}}
@@ -24,8 +29,11 @@
         <td>{{this.country_iso2}}
         </td>
   
-        <td><a href="/regionsCountries/{{region_country_id}}/edit">Edit</a>
+        <td>
+            <!--
+            <a href="/regionsCountries/{{region_country_id}}/edit">Edit</a>
             <a href="/regionsCountries/{{region_country_id}}/delete">Delete</a>
+            -->
         </td>
     </tr>
     {{/each}}

@@ -4,51 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <title>Assessment Guide</title>
+    <link href="/_css/alternateRowsTable.css" rel="stylesheet" >
+    <title>Currency and Country Mapping</title>
 </head>
 <body>
+<a id="top"></a>
+<a href="#bottom" class="btn btn-info">Goto BOTTOM</a>
+<t></t>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-    <div>MENU
-        <t></t>
-        <a href="/currencies" class="btn btn-primary">All Currencies</a>
-        <t></t>
-         <a href="/currencies/create" class="btn btn-secondary">Add A Currency</a>
-        <t></t>
-        <a href="/currencies/regions" class="btn btn-info">All Regions</a>
-        <t></t>
-        <a href="/currencies/regionsCountries" class="btn btn-info">All Regions with Countries</a>
-        <t></t>
-        <a href="/currencies/latlngs" class="btn btn-info">All Countries with Latitude and Longitude</a>
-        <t></t>
-        <p></p>
-    </div>
+    th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    /* Style for even rows */
+    tr:nth-child(even) {
+        background-color: #949393;
+    }
+
+    /* Style for odd rows */
+    tr:nth-child(odd) {
+        background-color: #d15ea1;
+    }
+
+    /* Optional: Highlight the first row */
+    tr:first-child {
+        background-color: #91f991;
+    }
+
+    tr:nth-child(20n) {
+      background-color: #ffcc00; /* Highlight every 20th row with yellow */
+      font-weight: bold; /* Make text bold */
+    }
+</style>
+<h5>SCHEMA</h5>
+    currency_id, currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
+    <p></p>
+    emoji_iso2, emoji_iso3, emoji_code
+    <p></p>
+    region_id, region_alpha2
+    <p></p>
+    region_country_id, region_name, country_iso2
+    <p></p> 
+    Latlng_id, country_name, alpha2, alpha3, CallingCodes, lat, lng
+    <p></p> 
     
-    {{#extends "basemenu"}}
-    {{#block "contentmenu"}}
-    <div class="container">
-        {{#block "content"}}{{/block}}
-    </div>
     <div>MENU
         <t></t>
         <a href="/currencies" class="btn btn-primary">All Currencies</a>
         <t></t>
-        <a href="/currencies/create" class="btn btn-secondary">Add A Currency</a>
+         <a href="/currencies/create" class="btn btn-secondary">Add Currency</a>
         <t></t>
         <a href="/currencies/regions" class="btn btn-info">All Regions</a>
         <t></t>
         <a href="/currencies/regionsCountries" class="btn btn-info">All Regions with Countries</a>
         <t></t>
+        <!--
+        <a href="/currencies/regionsCountriesCreate" class="btn btn-secondary">Create Region and Country Mapping</a>
+        <t></t>
+        -->
         <a href="/currencies/latlngs" class="btn btn-info">All Countries with Latitude and Longitude</a>
+        <t></t>
+        <a href="/currencies/showloggings" class="btn btn-info">Show Loggings</a>
         <t></t>
         <p></p>
     </div>
 
+    <div class="container">
+    {{#block "content"}}{{/block}}
+    </div>
+    <div>MENU
+        <t></t>
+        <a href="/currencies" class="btn btn-primary">All Currencies</a>
+        <t></t>
+         <a href="/currencies/create" class="btn btn-secondary">Add Currency</a>
+        <t></t>
+        <a href="/currencies/regions" class="btn btn-info">All Regions</a>
+        <t></t>
+        <a href="/currencies/regionsCountries" class="btn btn-info">All Regions with Countries</a>
+        <t></t>
+        <!--
+        <a href="/currencies/regionsCountriesCreate" class="btn btn-secondary">Create Region and Country Mapping</a>
+        <t></t>
+        -->
+        <a href="/currencies/latlngs" class="btn btn-info">All Countries with Latitude and Longitude</a>
+        <t></t>
+        <a href="/currencies/showloggings" class="btn btn-info">Show Loggings</a>
+        <t></t>
+        <p></p>
+    </div>
+    <a href="#top" class="btn btn-info">Goto TOP</a>
+    <t></t>
+    <a id="bottom"></a>
 
-    <script>
- 
-
-    </script>
 
 </body>
 </html>

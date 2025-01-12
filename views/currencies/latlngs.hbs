@@ -1,6 +1,26 @@
 {{#extends "base"}}
 {{#block "content"}}
 <h1>Countries Latitude and Longitude</h1>
+    <div class="mb-3">
+        <label>Country</label>
+        <select name="Latlng_id" class="form-control">
+            {{#each latlngs}}
+                <option value="{{Latlng_id}}"
+                    {{#eq this.Latlng_id ../customer.company_id}}selected{{/eq}}>
+                    {{country_name}}
+                </option>
+            {{/each}}
+        </select>
+        <button type="submit" class="btn btn-primary">Load Map 2</button>
+    </div>
+        <select name="company_id" class="form-control">
+            {{#each companies}}
+                <option value="{{this.company_id}}" 
+                    {{#eq this.company_id ../customer.company_id}}selected{{/eq}}>
+                    {{this.name}}
+                </option>
+            {{/each}}
+        </select>
 <table class="table">
     <!--
         INSERT INTO Latlng (country_name, alpha2, alpha3, CallingCodes, lat, lng) VALUES
@@ -31,6 +51,7 @@
         <td>{{this.lng}}
         </td>
         <td>
+        <a href="/currencies/{{Latlng_id}}/MapLoad">Map Load</a>
         </td>
         
     </tr>

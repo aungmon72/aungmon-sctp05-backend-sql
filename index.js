@@ -5,6 +5,8 @@ const hbs = require('hbs');
 const wax = require('wax-on');
 require('dotenv').config();
 
+
+
 const sqlCommands = [
 /*0*/ ['Currencies',        'currencies',       'SELECT * FROM Currencies'],
 /*1*/ ['Regions',           'regions',          'SELECT * FROM Regions'],
@@ -15,22 +17,15 @@ const sqlCommands = [
 /*5*/ ['Currencies_Latlng', 'currenciesLatlng', 
        'SELECT currency_id as ID, country_name NAME, symbol AS SYMBOL, ' +
             ' Latlng.alpha2 AS ISO2, Latlng.alpha3 AS ISO3, ' +
-            ' ROUND(Latlng.lat,2) AS Lat2, ROUND(Latlng.lng,2) Lng2 ' +
+            ' Latlng_id AS LLID, ROUND(Latlng.lat,2) AS Lat2, ROUND(Latlng.lng,2) Lng2 ' +
             ' FROM Currencies ' + 
             ' INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2'],
 
-// /*5*/ ['Currencies_Latlng', 'currenciesLatlng', 
-//        'SELECT currency_id, Currencies.country_name, Currencies.alpha2,  Currencies.alpha3, Currencies.symbol, ' +  
-//        '       ROUND(Latlng.lat,2), ROUND(Latlng.lng,2) ' +
-//        'FROM Currencies ' +
-//        'INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2'],
-/*    
-}
 
+/*    
 SELECT currency_id, Currencies.country_name, Currencies.alpha2,  Currencies.alpha3, Currencies.symbol, ROUND(Latlng.lat,2), ROUND(Latlng.lng,2) FROM Currencies INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2
 SELECT currency_id, country_name, symbol, ROUND(Latlng.lat,2), ROUND(Latlng.lng,2) FROM Currencies INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2
-SELECT currency_id as ID, country_name NAME, symbol AS SYMBOL, Latlng.alpha2 AS ISO2, Latlng.alpha3 AS ISO3, ROUND(Latlng.lat,2) AS Lat2, ROUND(Latlng.lng,2) Lng2 FROM Currencies INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2
-
+SELECT currency_id as ID, country_name NAME, symbol AS SYMBOL, Latlng.alpha2 AS ISO2, Latlng.alpha3 AS ISO3, Latlng_id AS LLID, ROUND(Latlng.lat,2) AS Lat2, ROUND(Latlng.lng,2) Lng2 FROM Currencies INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2
 */
 
 /*6*/ ['Currencies_Latlng', 'currenciesLatlng', 
@@ -38,7 +33,17 @@ SELECT currency_id as ID, country_name NAME, symbol AS SYMBOL, Latlng.alpha2 AS 
 
 /*7*/ ['Currencies_Regions','currenciesRegions',
        'SELECT * FROM Currencies INNER JOIN Regions_Countries ON Currencies.alpha2 = Regions_Countries.country_iso2'],
-/*8*/ ['Latlng','latlng','SELECT * FROM Latlng']
+/*8*/ ['Latlng','latlng','SELECT * FROM Latlng'],
+
+/* Extends from 5 */ 
+/*9*/ ['Currencies_Latlng', 'currenciesLatlng', 
+    'SELECT currency_id as ID, country_name NAME, symbol AS SYMBOL, ' +
+    ' Latlng.alpha2 AS ISO2, Latlng.alpha3 AS ISO3, ' +
+    ' Latlng_id AS LLID, ROUND(Latlng.lat,2) AS Lat2, ROUND(Latlng.lng,2) Lng2 ' +
+    ' ' +
+    ' FROM Currencies ' + 
+    ' INNER JOIN Latlng ON Currencies.alpha2 = Latlng.alpha2' +
+    ' INNER JOIN Regions ON Currencies.alpha2 = Regions.region_alpha2' ]
 
 ]
 
@@ -56,6 +61,9 @@ wax.setLayoutPath('./views/layouts');
 
 // require in handlebars and their helpers
 const helpers = require('handlebars-helpers');
+const { init } = require('express/lib/init.js');
+//  const { init } = require('/javascript/init.js');
+
 // tell handlebars-helpers where to find handlebars
 helpers({
     'handlebars': hbs.handlebars
@@ -74,8 +82,32 @@ hbs.registerHelper('round', function(value) {
     console.log("type of value2  ",  Object.prototype.toString.call(value2)); 
     return value2;
 });
-  
+
+
+
 async function main() {
+
+    async function dologging(category_id, category_description) {
+        
+        let [loggings] = await connection.execute('Select * from Loggings');
+
+        let query = 'INSERT INTO Loggings SET category_id=?, category_description=?, activity=? ';
+        console.log("query    ", query);
+
+        let currentDateTime = new Date();
+        let formattedDateTime = currentDateTime.toISOString().slice(0, 19).replace('T', ' ');
+
+        console.log("category_id, category_description,currentDateTime   ", category_id, category_description,formattedDateTime )
+        let bindings = [category_id, category_description, formattedDateTime];
+        await connection.execute(query, bindings);
+        // CREATE TABLE Loggings (
+        //     logging_id INT AUTO_INCREMENT PRIMARY KEY,
+        //     category_id INT NOT NULL,
+        //     category_description VARCHAR(20) NOT NULL,
+        //     activity DATETIME NOT NULL   
+        // );
+    }
+    
     connection = await createConnection({
         'host': process.env.DB_HOST,
         'user': process.env.DB_USER,
@@ -85,23 +117,21 @@ async function main() {
 
     app.get('/', (req,res) => {
         res.send('Hello, World!');
+        dologging(1,'Hello World!');
     });
-
-    {
-        // currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
-        // country_name, alpha2, alpha3, CallingCodes, lat, lng
-    }
+    
     app.get('/currencies', async (req, res) => {
         let [currencies] = await connection.execute(sqlCommands[0][2]);
+        //  let [currenciesLatlngs] = await connection.execute(sqlCommands[5][2]);
+        //  let [currenciesLatlngs] = await connection.execute(sqlCommands[9][2]);
         let [currenciesLatlngs] = await connection.execute(sqlCommands[5][2]);
-        //  console.log(currencies);
         console.log(currenciesLatlngs);
         res.render('currencies/index', {
             'currencies': currencies,
             'currenciesLatlngs'   : currenciesLatlngs
         })
+        dologging(20,'Table,  Currencies,  Operation,  List(Get)');
     })
-
 
     app.get('/currencies/:currency_id/edit', async (req, res) => {
         let [currencies] = await connection.execute(sqlCommands[0][2]);
@@ -114,21 +144,8 @@ async function main() {
             'currency': currency,
             'regions' : regions
         })
+        dologging(21,'Table,  Currencies,  Operation,  Edit(Get)');
     })
-
-{   // SCHEMA Currencies
-    // currency_id: 40,
-    // currency_name: 'Cocos',
-    // alpha2: 'CC',
-    // CallingCodes: '61',
-    // alpha3: 'CCK',
-    // ioc: '',
-    // symbol: 'AUD',
-
-    // region_country_id: 19,
-    // region_name: 'southeastAsia',
-    // country_iso2: 'CC'
-}
 
     app.post('/currencies/:currency_id/edit', async (req, res) => {
         let {currency_name, alpha2, CallingCodes, alpha3, ioc, symbol} = req.body;
@@ -139,8 +156,8 @@ async function main() {
         console.log("bindings  ",bindings);
         await connection.execute(query, bindings);
         res.redirect('./currencies');
+        dologging(22,'Table,  Currencies,  Operation,  Edit(Post)');
     })
-
 
     app.get('/currencies/create', async(req,res)=>{
         let [currencies] = await connection.execute(sqlCommands[0][2]);
@@ -153,23 +170,9 @@ async function main() {
             'currencies': currencies,
             'regions' : regions
         })
+        dologging(31,'Table,  Currencies,  Operation,  Create(Get)');
+
     })    
-
-    // app.post('/customers/create', async(req,res)=>{
-    //     let {first_name, last_name, rating, company_id} = req.body;
-    //     let query = 'INSERT INTO Customers (first_name, last_name, rating, company_id) VALUES (?, ?, ?, ?)';
-    //     let bindings = [first_name, last_name, rating, company_id];
-    //     await connection.execute(query, bindings);
-    //     res.redirect('/customers');
-    // })
-
-    // app.post('/currencies/:customer_id/create', async (req, res) => {
-    //     let {currency_name, alpha2, CallingCodes, alpha3, ioc, symbol} = req.body;
-    //     let query = 'UPDATE Currencies SET currency_name=?, alpha2=?, CallingCodes=?, alpha3=?, ioc=?, symbol=? WHERE currency_id=?';
-    //     let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol, req.params.currency_id];
-    //     await connection.execute(query, bindings);
-    //     res.redirect('/currencies');
-    // })
 
     app.post('/currencies/create', async (req, res) => {
         let {currency_name, alpha2, CallingCodes, alpha3, ioc, symbol} = req.body;
@@ -181,6 +184,7 @@ async function main() {
         console.log("bindings   ", bindings);
         await connection.execute(query, bindings);
         res.redirect('./currencies');
+        dologging(32,'Table,  Currencies,  Operation,  Create(Post)');
     })
 
     //  8.1 Implement a Route to Show a Confirmation Form
@@ -194,13 +198,15 @@ async function main() {
         console.log(currency);
         res.render('./currencies/delete', {
             currency
-        })
+        });
+        dologging(41,'Table,  Currencies,  Operation,  Delete(Get)');
     })
 
     //  8.2 Process the Delete
     app.post('/currencies/:currency_id/delete', async function(req, res){
         await connection.execute(`DELETE FROM Currencies WHERE currency_id =?`, [req.params.currency_id]);
         res.redirect('./currencies');
+        dologging(42,'Table,  Currencies,  Operation,  Delete(Post)');
     })
 
     app.get('/currencies/currenciesRegions', async (req, res) => {
@@ -210,6 +216,7 @@ async function main() {
         res.render('./currencies/currenciesRegions', {
             'currenciesRegions': currenciesRegions
         })
+        dologging(51,'Table,  CurrenciesRegions,  Operation,  List(Get)');
     })
 
     app.get('/currencies/regions', async (req, res) => {
@@ -219,6 +226,7 @@ async function main() {
         res.render('currencies/regions', {
             'regions': regions
         })
+        dologging(61,'Table,  Regions,  Operation,  List(Get)');
     })
 
     app.get('/currencies/regionsCountries', async (req, res) => {
@@ -228,16 +236,70 @@ async function main() {
         res.render('currencies/regionsCountries', {
             'regionsCountries': regionsCountries
         })
+        dologging(70,'Table,  RegionsCountries,  Operation,  List(Get)');
     })
 
-    app.get('/map', async (req, res) => {
-        //let [latlngs] = await connection.execute(sqlCommands[0][8]);
-        let [latlngs] = await connection.execute('select * from Latlng');
-    
-        console.log(latlngs);
-        res.render('./currencies/latlngs', {
-            'latlngs': latlngs
+    app.get('/currencies/:regionsCountries_id/edit', async (req, res) => {
+        let [regionsCountries] = await connection.execute(sqlCommands[2][2]);
+        console.log(regionsCountries);
+
+        let [currencies] = await connection.execute(sqlCommands[0][2]);
+        let [regions]    = await connection.execute(sqlCommands[1][2]);
+        let currency     = currencies[parseInt(req.params.currency_id)-1];
+        console.log(currencies);
+        console.log(currency);
+
+        res.render('./currencies/regionsCountriesEdit', {
+            'currency': currency,
+            'regions' : regions
         })
+        dologging(71,'Table,  RegionsCountries,  Operation,  Edit(Get)');
+    })
+
+    app.put('/currencies/:regionsCountries_id/edit', async (req, res) => {
+        dologging(72,'Table,  RegionsCountries,  Operation,  Edit(Put)');
+    })
+
+    app.get('/currencies/:regionsCountries_id/delete', async (req, res) => {
+        dologging(73,'Table,  RegionsCountries,  Operation,  Delete(Get)');
+    })
+
+    app.put('/currencies/:regionsCountries_id/delete', async (req, res) => {
+        dologging(74,'Table,  RegionsCountries,  Operation,  Delete(Put)');
+    })
+
+    app.get('/currencies/:latlng_id/map', async (req, res) => {
+        //let [latlngs] = await connection.execute(sqlCommands[0][8]);
+        const LLID = parseInt(req.params.latlng_id);
+        console.log (LLID)
+        let [latlngs] = await connection.execute(`select * from Latlng where Latlng_id = ?`, [LLID]);
+        const latlng = latlngs[0];
+        console.log(latlngs);
+        console.log(latlng);
+        
+        res.render('./currencies/latlngs', {
+            'latlngs': latlngs,
+            'latlng': latlng
+            
+        })
+        
+        dologging(80,'Table,  Latlng,  Operation,  List(Get)');
+    })
+
+    app.get('/currencies/:latlng_id/mapload', async (req, res) => {
+        const LLID = parseInt(req.params.latlng_id);
+        console.log (LLID)
+        let [latlngs] = await connection.execute(`select * from Latlng where Latlng_id = ?`, [LLID]);
+        const latlng = latlngs[0];
+        const lat = latlng.lat;
+        const lng = latlng.lng;
+        console.log("lat   ", lat, "lng   ", lng);
+        res.render('./currencies/foursquare', {
+            'lat': lat,
+            'lng' : lng
+        }) 
+        dologging(83,'Table,  Latlng,  Operation,  MapLoad(Get)');
+        //  init(lat,lng);
     })
 
     app.get('/currencies/latlngs', async (req, res) => {
@@ -248,6 +310,7 @@ async function main() {
         res.render('./currencies/foursquare', {
             'latlngs': latlngs
         })
+        dologging(81,'Table,  Latlng,  Operation,  List(Get)');
     })
 
     app.get('/currencies/:latlng_id_map/map', async (req, res) => {
@@ -261,6 +324,18 @@ async function main() {
         res.render('./currencies/foursquare', {
             'latlng': latlng
         })
+        dologging(82,'Table,  Latlng,  Operation,  Map(FourSquare)(Get)');
+    })
+
+    app.get('/currencies/showloggings', async (req, res) => {
+
+        dologging(100,'Table,  Loggings,  Operation,  List(Get)');
+        let [loggings] = await connection.execute('SELECT * from Loggings ');
+        console.log(loggings);
+        res.render('currencies/loggings', {
+            'loggings': loggings
+        })
+        
     })
 
     app.listen(3000, ()=>{

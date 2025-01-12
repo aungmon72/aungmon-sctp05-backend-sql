@@ -1,0 +1,26 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* Style for even rows */
+tr:nth-child(even) {
+    background-color: #464343;
+}
+
+/* Style for odd rows */
+tr:nth-child(odd) {
+    background-color: #d15ea1;
+}
+
+/* Optional: Highlight the first row */
+tr:first-child {
+    background-color: #d9d9d9;
+}

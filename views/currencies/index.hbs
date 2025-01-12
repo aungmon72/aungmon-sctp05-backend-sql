@@ -1,11 +1,9 @@
 {{#extends "base"}}
 {{#block "content"}}
 <h1>Currencies</h1>
+
 <table class="table">
-    currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
-    <p></p>
-    country_name, alpha2, alpha3, CallingCodes, lat, lng
-    <p></p>
+
     
     <tr>
         <th>Country Name</th>
@@ -36,7 +34,7 @@
         </td>
         <td><a href="/currencies/{{ID}}/edit">Edt</a>
             <a href="/currencies/{{ID}}/delete">Del</a>
-            <a href="/currencies/{{ID}}/map">Map</a>
+            <a href="/currencies/{{LLID}}/map">Map</a>
             
         </td>
     </tr>

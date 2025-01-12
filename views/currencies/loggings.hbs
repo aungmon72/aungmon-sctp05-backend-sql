@@ -1,0 +1,27 @@
+{{#extends "base"}}
+{{#block "content"}}
+<h1>Currencies</h1>
+<table class="table">
+
+    <tr>
+        <th>ID</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Activity</th>
+    </tr>
+
+    {{#each loggings}}
+    <tr>
+        <td>{{this.logging_id}}
+        </td>
+        <td>{{this.category_id}}
+        </td>
+        <td>{{this.category_description}}
+        </td>
+        <td>{{this.activity}}
+        </td>
+    </tr>
+    {{/each}}
+</table>
+{{/block}}
+{{/extends}}
