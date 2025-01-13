@@ -155,7 +155,7 @@ async function main() {
         let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol, req.params.currency_id];
         console.log("bindings  ",bindings);
         await connection.execute(query, bindings);
-        res.redirect('./currencies');
+        res.redirect('/currencies');
         dologging(22,'Table,  Currencies,  Operation,  Edit(Post)');
     })
 
@@ -183,7 +183,7 @@ async function main() {
         let bindings = [currency_name, alpha2, CallingCodes, alpha3, ioc, symbol];
         console.log("bindings   ", bindings);
         await connection.execute(query, bindings);
-        res.redirect('./currencies');
+        res.redirect('/currencies');
         dologging(32,'Table,  Currencies,  Operation,  Create(Post)');
     })
 
@@ -205,7 +205,7 @@ async function main() {
     //  8.2 Process the Delete
     app.post('/currencies/:currency_id/delete', async function(req, res){
         await connection.execute(`DELETE FROM Currencies WHERE currency_id =?`, [req.params.currency_id]);
-        res.redirect('./currencies');
+        res.redirect('/currencies');
         dologging(42,'Table,  Currencies,  Operation,  Delete(Post)');
     })
 
@@ -282,7 +282,7 @@ async function main() {
             'latlng': latlng
             
         })
-        
+
         dologging(80,'Table,  Latlng,  Operation,  List(Get)');
     })
 

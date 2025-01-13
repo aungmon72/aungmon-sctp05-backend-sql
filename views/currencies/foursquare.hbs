@@ -42,13 +42,34 @@
             console.log("Selected country_name:", selectedText);
             const selectedText2 = stripOffCountryName(selectedText);
             console.log("Selected [lat, lng]:", selectedText2);
-            mapLoad(${selectedText2});
+            let mapArray = getLatLngArray(selectedText2);
+            mapLoad(mapArray);
+
+            function stripOffCountryName(text) {
+              const regex = /^[^\[]+/;
+              return text.replace(regex, '').trim();
+            }  //  function stripOffCountryName(text) {
+
+            function getLatLngArray(selectedText) {
+              // Use regex to match the part inside the square brackets and extract the lat, lng
+              const regex = /\[([-\d.]+),\s*([-\d.]+)\]/;
+              const match = selectedText.match(regex);  // Match the pattern [lat, lng]
+
+              if (match) {
+                // Return an array of [lat, lng]
+                const lat = parseFloat(match[1]);
+                const lng = parseFloat(match[2]);
+                return [lat, lng];
+              }
+              return nul[1.367, 103.8]; // Return Singapore  if no match found
+            }  //  function getLatLngArray(selectedText) {
+
           });
         </script>
-        <button type="submit" class="btn btn-primary">Submit</button>
+
     </form>
     
-    <div>MENU
+    <div><h5>MENU</h5>
         <t></t>
         <a href="/currencies" class="btn btn-primary">All Currencies</a>
         <t></t>
@@ -72,7 +93,7 @@
   <!-- Map container -->
   <div id="map-load" style="height: 500px;"></div>
 
-    <div>MENU
+    <div><h5>MENU</h5>
         <t></t>
         <a href="/currencies" class="btn btn-primary">All Currencies</a>
         <t></t>
@@ -99,14 +120,19 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
+    
+    let map = new L.map('map-load').setView([{{lat}}, {{lng}}], 13);  
+    mapLoad(map, [{{lat}}, {{lng}}]);
 
-    //  let map = new L.map('map-load').setView([{{lat}}, {{lng}}], 13);  
-    mapLoad([{{lat}}, {{lng}}]);
-
-    function mapLoad(latlng) {
+    function mapLoad(map, latlng) {
       console.log("Calling mapLoad()--------")
-      let map = new L.map('map-load').setView(latlng, 13);  
-
+      if (map) {
+        let map = new L.map('map-load').setView(latlng, 13);
+      }
+      if (map) {
+        L.map().setView(latlng, 13); 
+      }
+      console.log("map is loaded and setview() successful.", map);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
@@ -114,12 +140,8 @@
       L.marker(latlng).addTo(map)
         .bindPopup({{country_name}})
         .openPopup();
-    }  //  function mapLoad(latlng) {
 
-    function stripOffCountryName(text) {
-      const regex = /^[^\[]+/;  
-      return text.replace(regex, '').trim();  
-    }  //  function stripOffCountryName(text) {
+    }  //  function mapLoad(latlng) {
 
 
   </script>
