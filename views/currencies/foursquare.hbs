@@ -43,18 +43,22 @@
             const selectedText2 = stripOffCountryName(selectedText);
             console.log("Selected [lat, lng]:", selectedText2);
             let mapArray = getLatLngArray(selectedText2);
-            mapLoad(mapArray);
+            let map;
+            mapLoad(map, mapArray);
 
             function mapLoad(map, latlng) {
               console.log("Calling mapLoad()--------")
               console.log("map upon calling is  ", map);
-              if (!map) {
-                map = new L.map('map-load').setView(latlng, 13);
-                console.log("map after initialization is ", map);
-              }
-              if (!map) {
+              if (map) {
                 L.map().setView(latlng, 13);
               }
+              else  {
+                console.log("map before initialization is  ", map);
+                map = new L.map('map-load').setView(latlng, 13);
+                //  map = new L.map('map-load').setView(latlng, 13);
+                console.log("map after initialization is ", map);
+              }
+
               console.log("map is loaded and setview() successful.", map);
               if (!map) {
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -64,7 +68,8 @@
                 L.marker(latlng).addTo(map)
                   .bindPopup({{ country_name }})
                 .openPopup();
-      }
+              }
+            }
             
             function stripOffCountryName(text) {
               const regex = /^[^\[]+/;
@@ -147,7 +152,7 @@
     mapLoad2(map, [{{lat}}, {{lng}}]);
 
     function mapLoad2(map, latlng) {
-      console.log("Calling mapLoad()--------")
+      console.log("Calling mapLoad2()--------")
       console.log("map upon calling is  ", map);
       if (!map) {
         map = new L.map('map-load').setView(latlng, 13);
