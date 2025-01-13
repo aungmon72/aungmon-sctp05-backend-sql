@@ -33,18 +33,90 @@
             {{/each}}
         </select>
         <script>
+          
+          let maploaded = false;
+          
           const dropdown = document.getElementById('latlngDropdown');
           dropdown.addEventListener('change', function () {
             const selectedValue = dropdown.value;  // Latlng_id
             const selectedText = dropdown.options[dropdown.selectedIndex].text; // country_name
 
-            console.log("Selected Latlng_id:", selectedValue);
-            console.log("Selected country_name:", selectedText);
+            console.log("Selected Latlng_id:", selectedValue);        //281
+            console.log("Selected country_name:", selectedText);      //282
             const selectedText2 = stripOffCountryName(selectedText);
-            console.log("Selected [lat, lng]:", selectedText2);
+            console.log("Selected [lat, lng]:", selectedText2);       //284
             let mapArray = getLatLngArray(selectedText2);
+            console.log(mapArray);                                    //286
             let map;
-            mapLoad(map, mapArray);
+
+            console.log("maploaded[0]  ", maploaded);
+            maploaded = mapSetView4(map, mapArray, maploaded);
+            //  mapLoad(map, mapArray);
+
+            function mapSetView4(map, latlng, maploaded) {
+              // If map is already initialized, we don't need to initialize it again
+              console.log("maploaded[0]  ", maploaded);
+              if (!map  && maploaded==false) {
+                // Initialize the map if it's not already initialized
+                map = new L.map('map-load').setView(latlng, 13);                             //295
+                console.log("Map is initialized:", map);
+
+                // Add the tile layer (if not already added)
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+                maploaded = true;
+              }
+              console.log("maploaded[0]  ", maploaded);
+              if (maploaded==true) {
+                // Map is already initialized, just update the view
+                map.setView(latlng, 13);
+                //  map.setView(latlng, 13);
+                
+                console.log("Map view updated:", map);
+              }
+
+              // Add a marker (if not already added)
+              L.marker(latlng).addTo(map)
+                .bindPopup("Selected Location")
+                .openPopup();
+              return maploaded;
+            }
+
+            function mapSetView(map, latlng) {
+              if (!map) {
+                // Initialize the map if it's not already initialized
+                map = new L.map('map-loadB').setView(latlng, 13);
+                console.log("Map is initialized:", map);
+              } else {
+                // If map is already initialized, just update the view
+                map.setView(latlng, 13);
+                console.log("Map view updated:", map);
+              }
+
+              // Set the tile layer if it's the first time initializing the map
+              if (!map.hasLayer) {  // check if layer is already added
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+              }
+
+              // Add a marker
+              L.marker(latlng).addTo(map)
+                .bindPopup("Selected Location")
+                .openPopup();
+            }  //  function mapSetView(map, latlng) {
+
+            function mapSetView2 (map, latlng, countryName) {
+              console.log("mapSetView is called")
+              if (map) {
+                map = L.map('map-load').setView(latlng, 13); // Set initial view with the latlng
+              }
+              else {
+                map.setView(map, latlng);
+              }
+
+            }
 
             function mapLoad(map, latlng, countryName) {
               console.log("Calling mapLoad()--------");
@@ -52,7 +124,7 @@
 
               // Initialize the map if it hasn't been initialized already
               if (!map) {
-                map = L.map('map-loadB').setView(latlng, 13); // Set initial view with the latlng
+                map = L.map('map-load').setView(latlng, 13); // Set initial view with the latlng
                 console.log("map after initialization is ", map);
 
                 // Adding tile layer to the map
@@ -65,39 +137,12 @@
                 L.marker(latlng).addTo(map)
                   .bindPopup(countryName)  // Country name passed to bindPopup
                   .openPopup();
-                console.log("marker added"
+                console.log("marker added");
               }
 
               console.log("map is loaded and setView() successful.", map);
-
             }  //  function mapLoad(map, latlng, countryName) {
-
-            function mapLoad3(map, latlng) {
-              console.log("Calling mapLoad3()--------")
-              console.log("map upon calling is  ", map);
-              if (map) {
-                console.log("Before setView()")
-                L.map().setView(latlng, 13);
-              }
-              else  {
-                console.log("map before initialization is  ", map);
-                map = new L.map('map-load').setView(latlng, 13);
-                //  map = new L.map('map-load').setView(latlng, 13);
-                console.log("map after initialization is ", map);
-              }
-
-              console.log("map is loaded and setview() successful.", map);
-              if (!map) {
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
-
-                L.marker(latlng).addTo(map)
-                  .bindPopup({{ country_name }})
-                .openPopup();
-              }
-            }  //  function mapLoad(map, latlng) {
-            
+ 
             function stripOffCountryName(text) {
               const regex = /^[^\[]+/;
               return text.replace(regex, '').trim();
@@ -176,13 +221,22 @@
   <script>
     
     // let map = new L.map('map-load').setView([{{lat}}, {{lng}}], 13);
-    let map;  
-    mapLoad2(map, [{{lat}}, {{lng}}], {{country_name}});
+    let map2;
+    let mapArray =   [{{lat}}, {{lng}}]
+    if (mapArray.some(item => item === undefined)) {
+       mapArray = [1.3667000532150269, 103.80000305175781]
+    }
+    mapLoadB(map2, mapArray, {{country_name}});
 
-  function mapLoad2(map, latlng, countryName) {
+  function mapLoadB(map, latlng, countryName) {
     console.log("Calling mapLoad2()--------");
     console.log("map upon calling is  ", map);
-
+    console.log("[lat, lng] is ", latlng, latlng[0], latlng[1]);
+    let  singapore = [1.3667000532150269, 103.80000305175781];
+    if (typeof latlng[0] === "undefined") latlng[0] = singapore[0];
+    if (typeof latlng[1] === "undefined") latlng[1] = singapore[1];
+    
+    console.log("[lat, lng] is ", latlng);
     // Initialize the map if it hasn't been initialized already
     if (!map) {
       map = L.map('map-load').setView(latlng, 13); // Set initial view with the latlng
@@ -200,6 +254,8 @@
     L.marker(latlng).addTo(map)
       .bindPopup(countryName)  // Country name passed to bindPopup
       .openPopup();
+
+    maploaded = true;
   }  //  function mapLoad2(map, latlng, countryName) {
 
 
