@@ -1,5 +1,5 @@
 +-----------------------+        +-----------------------+
-|       Currencies      |        |        Latlng        |
+|       Currencies      |        |        Latlng         |
 +-----------------------+        +-----------------------+
 | PK currency_id        |        | PK Latlng_id          |
 | currency_name         |        | country_name          |
