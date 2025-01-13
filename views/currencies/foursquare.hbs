@@ -45,6 +45,27 @@
             let mapArray = getLatLngArray(selectedText2);
             mapLoad(mapArray);
 
+            function mapLoad(map, latlng) {
+              console.log("Calling mapLoad()--------")
+              console.log("map upon calling is  ", map);
+              if (!map) {
+                map = new L.map('map-load').setView(latlng, 13);
+                console.log("map after initialization is ", map);
+              }
+              if (!map) {
+                L.map().setView(latlng, 13);
+              }
+              console.log("map is loaded and setview() successful.", map);
+              if (!map) {
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                L.marker(latlng).addTo(map)
+                  .bindPopup({{ country_name }})
+                .openPopup();
+      }
+            
             function stripOffCountryName(text) {
               const regex = /^[^\[]+/;
               return text.replace(regex, '').trim();
@@ -123,26 +144,29 @@
     
     // let map = new L.map('map-load').setView([{{lat}}, {{lng}}], 13);
     let map;  
-    mapLoad(map, [{{lat}}, {{lng}}]);
+    mapLoad2(map, [{{lat}}, {{lng}}]);
 
-    function mapLoad(map, latlng) {
+    function mapLoad2(map, latlng) {
       console.log("Calling mapLoad()--------")
-      console.log("map is  ", map);
+      console.log("map upon calling is  ", map);
       if (!map) {
         map = new L.map('map-load').setView(latlng, 13);
-        console.log("map is ", map);
+        console.log("map after initialization is ", map);
       }
-      if (map) {
+      if (!map) {
         L.map().setView(latlng, 13); 
       }
       console.log("map is loaded and setview() successful.", map);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+      if (!map) {
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
 
-      L.marker(latlng).addTo(map)
-        .bindPopup({{country_name}})
+        L.marker(latlng).addTo(map)
+          .bindPopup({{ country_name }})
         .openPopup();
+      }
+      
 
     }  //  function mapLoad(latlng) {
 
