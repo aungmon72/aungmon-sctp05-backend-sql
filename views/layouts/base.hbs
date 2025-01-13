@@ -44,6 +44,7 @@
       font-weight: bold; /* Make text bold */
     }
 </style>
+
 <h5>SCHEMA</h5>
     currency_id, currency_name, alpha2,CallingCodes, alpha3, ioc, symbol
     <p></p>
@@ -103,6 +104,27 @@
     <a href="#top" class="btn btn-info">Goto TOP</a>
     <t></t>
     <a id="bottom"></a>
+
+    <script>
+        // Add anchors dynamically to every 20th row
+        const tableRows = document.querySelectorAll("#CurrencyTable tbody tr");
+
+        tableRows.forEach((row, index) => {
+        if ((index + 1) % 20 === 0) {  // For every 20th row (index starts from 0)
+            const td = row.cells[0];  // First cell in the row
+            const anchorTop = document.createElement("a");
+            anchorTop.href = "#top";
+            anchorTop.textContent = "Top";
+            td.appendChild(anchorTop);
+
+            const td2 = row.cells[1];  // Second cell in the row
+            const anchorBottom = document.createElement("a");
+            anchorBottom.href = "#bottom";
+            anchorBottom.textContent = "Bottom";
+            td1.appendChild(anchorBottom);
+        }
+        });
+    </script>
 
 
 </body>

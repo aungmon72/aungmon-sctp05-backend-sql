@@ -35,7 +35,8 @@
         <script>
           
           let maploaded = false;
-          
+          let map;  //  CHECK
+
           const dropdown = document.getElementById('latlngDropdown');
           dropdown.addEventListener('change', function () {
             const selectedValue = dropdown.value;  // Latlng_id
@@ -47,7 +48,7 @@
             console.log("Selected [lat, lng]:", selectedText2);       //284
             let mapArray = getLatLngArray(selectedText2);
             console.log(mapArray);                                    //286
-            let map;
+
 
             console.log("maploaded[0]  ", maploaded);
             maploaded = mapSetView4(map, mapArray, maploaded);
@@ -55,7 +56,7 @@
 
             function mapSetView4(map, latlng, maploaded) {
               // If map is already initialized, we don't need to initialize it again
-              console.log("maploaded[0]  ", maploaded);
+              console.log("maploaded[1]  ", maploaded);
               if (!map  && maploaded==false) {
                 // Initialize the map if it's not already initialized
                 map = new L.map('map-load').setView(latlng, 13);                             //295
@@ -67,10 +68,16 @@
                 }).addTo(map);
                 maploaded = true;
               }
-              console.log("maploaded[0]  ", maploaded);
+              console.log("maploaded[2]  ", maploaded);
               if (maploaded==true) {
+                if (map) {
+                  map = new L.map('map-load');
+                  map.setView(latlng, 13);
+                  maploaded = true;
+                }
+                console.log("map ", map)
                 // Map is already initialized, just update the view
-                map.setView(latlng, 13);
+
                 //  map.setView(latlng, 13);
                 
                 console.log("Map view updated:", map);
