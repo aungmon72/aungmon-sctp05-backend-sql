@@ -127,8 +127,10 @@
 
     function mapLoad(map, latlng) {
       console.log("Calling mapLoad()--------")
-      if (map) {
-        let map = new L.map('map-load').setView(latlng, 13);
+      console.log("map is  ", map);
+      if (!map) {
+        map = new L.map('map-load').setView(latlng, 13);
+        console.log("map is ", map);
       }
       if (map) {
         L.map().setView(latlng, 13); 
