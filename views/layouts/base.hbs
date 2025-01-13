@@ -8,8 +8,8 @@
     <title>Currency and Country Mapping</title>
 </head>
 <body>
-<a id="top"></a>
-<a href="#bottom" class="btn btn-info">Goto BOTTOM</a>
+<a id="TableTop"></a>
+<a href="#TableBottom" class="btn btn-info">Goto BOTTOM</a>
 <t></t>
 <style>
     table {
@@ -116,61 +116,75 @@
         <t></t>
         <p></p>
     </div>
-    <a href="#top" class="btn btn-info">Goto TOP</a>
+    <a href="#TableTop" class="btn btn-info">Goto TOP</a>
     <t></t>
-    <a id="bottom"></a>
+    <a id="TableBottom"></a>
 
-    <script>
-        // Add anchors dynamically to every 20th row
-        const tableRows = document.querySelectorAll("#CurrencyTable tbody tr");
+   <div class="pagination-anchors">
+    <a href="#PreviousRows" id="previousRowsAnchor">Go to Previous 20 Rows</a>
+    <a href="#NextRows" id="nextRowsAnchor">Go to Next 20 Rows</a>
+  </div>
 
-            tableRows.forEach((row, index) => {
-                if ((index + 1) % 20 === 0) {  // For every 20th row (index starts from 0)
-                    const td = row.cells[0];  // First cell in the row
-                    const anchorTop = document.createElement("a");
-                    anchorTop.href = "#top";
-                    anchorTop.textContent = "Top";
-                    td.appendChild(anchorTop);
+  <script>
+    // Add anchors dynamically to every 20th row
+    const tableRows = document.querySelectorAll("#CurrencyTable tbody tr");
 
-                    const td2 = row.cells[1];  // Second cell in the row
-                    const anchorBottom = document.createElement("a");
-                    anchorBottom.href = "#bottom";
-                    anchorBottom.textContent = "   Bottom   ";
-                    td.appendChild(anchorBottom);
+    tableRows.forEach((row, index) => {
+      if ((index + 1) % 20 === 0) {  // For every 20th row (index starts from 0)
+        const td = row.cells[0];  // First cell in the row
+        const anchorParagraph = document.createElement("p");
+        td.appendChild(anchorParagraph);
+        const anchorTop = document.createElement("a");
+        anchorTop.href = "#TableTop";
+        anchorTop.textContent = "Top";
+        anchorTop.classList.add("btn", "btn-primary");
+        td.appendChild(anchorTop);
 
-                    // Add Previous 20 Rows link in the first column
-                    const previousAnchor = document.createElement("a");
-                    previousAnchor.href = "#PreviousRows";
-                    previousAnchor.textContent = "Prev20";
-                    td.appendChild(previousAnchor);
+        const td2 = row.cells[1];  // Second cell in the row
+        const anchorBottom = document.createElement("a");
+        anchorBottom.href = "#TableBottom";
+        anchorBottom.textContent = "Bottom";
+        anchorBottom.classList.add("btn", "btn-secondary");
+        td.appendChild(anchorBottom);
+        const anchorTab = document.createElement("t");
+        td.appendChild(anchorTab);
 
-                    // Add Next 20 Rows link in the second column
-                    const nextAnchor = document.createElement("a");
-                    nextAnchor.href = "#NextRows";
-                    nextAnchor.textContent = "   Next20   ";
-                    td.appendChild(nextAnchor);
-                }
-        });
-        // Handling the scrolling behavior for previous and next rows
-        document.getElementById("previousRowsAnchor").addEventListener("click", function (event) {
-            event.preventDefault();
-            const currentRow = document.querySelectorAll("#myTable tbody tr:nth-child(20n)");
-            const previousRow = currentRow[currentRow.length - 2]; // Target the previous 20th row
-            if (previousRow) {
-                previousRow.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-        });
 
-        document.getElementById("nextRowsAnchor").addEventListener("click", function (event) {
-            event.preventDefault();
-            const currentRow = document.querySelectorAll("#myTable tbody tr:nth-child(20n)");
-            const nextRow = currentRow[currentRow.length]; // Target the next 20th row
-            if (nextRow) {
-                nextRow.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-        });
-                
-    </script>
+        // Add Previous 20 Rows link in the first column
+        const previousAnchor = document.createElement("a");
+        previousAnchor.href = "#PreviousRows";
+        previousAnchor.textContent = "Prev20";
+        previousAnchor.classList.add("btn", "btn-primary");
+        td.appendChild(previousAnchor);
+
+        // Add Next 20 Rows link in the second column
+        const nextAnchor = document.createElement("a");
+        nextAnchor.href = "#NextRows";
+        nextAnchor.textContent = "    Next20    ";
+        nextAnchor.classList.add("btn", "btn-secondary");
+        td.appendChild(nextAnchor);
+      }
+    });
+
+    // Handling the scrolling behavior for previous and next rows
+    document.getElementById("previousRowsAnchor").addEventListener("click", function(event) {
+      event.preventDefault();
+      const currentRow = document.querySelectorAll("#CurrencyTable tbody tr:nth-child(20n)");
+      const previousRow = currentRow[currentRow.length - 2]; // Target the previous 20th row
+      if (previousRow) {
+        previousRow.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    document.getElementById("nextRowsAnchor").addEventListener("click", function(event) {
+      event.preventDefault();
+      const currentRow = document.querySelectorAll("#CurrencyTable tbody tr:nth-child(20n)");
+      const nextRow = currentRow[currentRow.length]; // Target the next 20th row
+      if (nextRow) {
+        nextRow.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  </script>
 
 
 </body>
