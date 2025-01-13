@@ -121,7 +121,8 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     
-    let map = new L.map('map-load').setView([{{lat}}, {{lng}}], 13);  
+    // let map = new L.map('map-load').setView([{{lat}}, {{lng}}], 13);
+    let map;  
     mapLoad(map, [{{lat}}, {{lng}}]);
 
     function mapLoad(map, latlng) {
