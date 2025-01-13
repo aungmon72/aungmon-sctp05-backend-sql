@@ -1,0 +1,31 @@
++-----------------------+        +-----------------------+
+|       Currencies      |        |        Latlng        |
++-----------------------+        +-----------------------+
+| PK currency_id        |        | PK Latlng_id          |
+| currency_name         |        | country_name          |
+| alpha2                |        | alpha2                |
+| CallingCodes          |        | alpha3                |
+| alpha3                |        | CallingCodes          |
+| ioc                   |        | lat                   |
+| symbol                |        | lng                   |
++-----------------------+        +-----------------------+
+           |                             |
+           |                             |
+           +-----------------------------+
+                    relationship on alpha2
+                    
++-----------------------+
+|        Regions        |
++-----------------------+
+| PK region_id          |
+| region_alpha2         |
++-----------------------+
+
++-----------------------+
+|       Loggings        |
++-----------------------+
+| PK logging_id         |
+| category_id           |
+| category_description  |
+| activity              |
++-----------------------+
